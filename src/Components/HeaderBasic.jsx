@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { FaRegUser } from "react-icons/fa";
+import UserCorner from "./General/UserCorner";
 export default function HeaderBasic({ hName, hSubName }) {
   return (
     <div>
@@ -11,7 +12,7 @@ export default function HeaderBasic({ hName, hSubName }) {
             {hSubName ? <h2 className='text-white pl-2'>{hSubName}</h2> : null}
           </div>
           <div className='h-fit pr-5'>
-            <FaRegUser color='white' />
+            <UserCorner />
           </div>
         </div>
       </header>
