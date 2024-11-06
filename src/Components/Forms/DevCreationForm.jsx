@@ -19,7 +19,6 @@ import {
   Switch,
   FormControl,
 } from "@chakra-ui/react";
-import { list } from "postcss";
 
 export default function DevCreationForm() {
   const [countries, setCountries] = useState([]);
