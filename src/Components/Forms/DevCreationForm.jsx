@@ -5,7 +5,20 @@ import { Country, State, City } from "country-state-city";
 
 //own
 import BtnCustom from "../General/BtnCustom";
-import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormLabel, Input, Select, Switch, FormControl } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormLabel,
+  Input,
+  Select,
+  Switch,
+  FormControl,
+} from "@chakra-ui/react";
 import { list } from "postcss";
 
 export default function DevCreationForm() {
@@ -83,13 +96,13 @@ export default function DevCreationForm() {
                   </option>
                 ))}
               </Select>
-              <FormControl display={'flex'} alignItems={'center'} py={'4'}>
-                <FormLabel htmlFor="company" mb='0'>
+              <FormControl display={"flex"} alignItems={"center"} py={"4"}>
+                <FormLabel htmlFor='company' mb='0'>
                   Company
                 </FormLabel>
-                <Switch id="company"/>
+                <Switch id='company' />
               </FormControl>
-              <BtnCustom text={"Create New Dev"}/>
+              <BtnCustom text={"Create New Dev"} />
             </form>
           </ModalBody>
         </ModalContent>
