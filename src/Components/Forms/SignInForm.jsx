@@ -13,20 +13,23 @@ import {
   FormControl,
   Input,
   FormLabel,
+  RadioGroup,
+  HStack,
+  Radio,
 } from "@chakra-ui/react";
 
-export default function LoginForm() {
+export default function SignInForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modRef = useRef(null);
 
   return (
     <>
-      <Button onClick={onOpen}>Login Modal</Button>
+      <Button onClick={onOpen}>SignIn Modal</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Login</ModalHeader>
+          <ModalHeader>SignIn</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
@@ -38,11 +41,23 @@ export default function LoginForm() {
                 <FormLabel>password</FormLabel>
                 <Input type='password' />
               </FormControl>
+              <FormControl isRequired>
+                <FormLabel>confirm password</FormLabel>
+                <Input type='password' />
+              </FormControl>
+              <FormControl as={"fieldSet"} isRequired>
+                <FormLabel as={"legend"}>Choose One</FormLabel>
+                <RadioGroup>
+                  <HStack>
+                    <Radio value='testing'>Testing</Radio>
+                    <Radio value='mograph'>Mograph</Radio>
+                    <Radio value='dev'>Dev</Radio>
+                    <Radio value='shows'>Live Events</Radio>
+                  </HStack>
+                </RadioGroup>
+              </FormControl>
               <Button type='submit' mt={4} w={"full"}>
-                Login
-              </Button>
-              <Button mt={4} w={"full"}>
-                Forgot Password?
+                Signin
               </Button>
             </form>
           </ModalBody>

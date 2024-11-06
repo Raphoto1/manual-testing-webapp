@@ -31,7 +31,7 @@ export default function Home() {
               rotate: -90,
               borderRadius: "100%",
             }}>
-            <h2 className=" text-white">Motion</h2>
+            <h2 className=" text-white">Mograph</h2>
           </motion.div>
           <motion.div
             className='w-1/4 h-20 bg-pink-100'
@@ -51,7 +51,7 @@ export default function Home() {
               rotate: -90,
               borderRadius: "100%",
             }}>
-            <h2 className=" text-white">Develope</h2>
+            <h2 className=" text-white">Dev</h2>
           </motion.div>
           <motion.div
             className='w-1/4 h-20 bg-green-500'
@@ -61,7 +61,7 @@ export default function Home() {
               rotate: -90,
               borderRadius: "100%",
             }}>
-            <h2 className=" text-white">Shows</h2>
+            <h2 className=" text-white">Live Events</h2>
           </motion.div>
         </div>
       </section>
