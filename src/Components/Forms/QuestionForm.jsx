@@ -1,8 +1,6 @@
 "use client";
 //app
 import React, { useState } from "react";
-//own
-import BtnCustom from "../General/BtnCustom";
 import {
   useDisclosure,
   Modal,
@@ -15,12 +13,11 @@ import {
   Input,
   Select,
   Switch,
-  FormControl,
   Textarea,
-    NumberInput,
-    FormErrorMessage,
-  FormHelperText
+    Box,
 } from "@chakra-ui/react";
+//own
+import BtnCustom from "../General/BtnCustom";
 
 export default function QuestionForm() {
   const [typeChoosed, setTypeChoosed] = useState("");
@@ -50,7 +47,9 @@ export default function QuestionForm() {
               {typeChoosed === "number" ? <Input id='spectedAnswer' type='number' /> : null}
               <FormLabel>Reference capture</FormLabel>
               <Input type='file' size={'xs'}/>
-              <BtnCustom text={"Create New Dev"} />
+              <Box display={'flex'} justifyContent={'end'} pt={2}>
+                <BtnCustom text={"Create New Dev"} />
+              </Box>
             </form>
           </ModalBody>
         </ModalContent>
