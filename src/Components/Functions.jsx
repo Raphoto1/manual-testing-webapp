@@ -8,6 +8,8 @@ import QuestionForm from "./Forms/QuestionForm";
 import FakeUserForm from "./Forms/FakeUserForm";
 import PlatformCreationForm from "./Forms/PlatformCreationForm";
 import ContextCreationForm from "./Forms/ContextCreationForm";
+import AppCreationForm from "./Forms/AppCreationForm";
+import TestCreationForm from "./Forms/TestCreationForm";
 export default function Functions() {
   return (
     <div className='flex justify-between p-2 gap-2'>
@@ -17,8 +19,9 @@ export default function Functions() {
       <FakeUserForm />
       <ContextCreationForm />
       <PlatformCreationForm />
-      <BtnCustom text={"new Test"} />
-      <BtnCustom text={"new app"} />
+      <AppCreationForm />
+      <TestCreationForm />
+      
     </div>
   );
 }
