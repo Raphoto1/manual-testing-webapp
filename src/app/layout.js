@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>{children}</Providers>
-      <footer>CreativeRafa 2024</footer>
+      <footer>CreativeRafa 2025</footer>
       </body>
     </html>
   );

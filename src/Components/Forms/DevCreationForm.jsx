@@ -2,9 +2,6 @@
 //app
 import React, { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
-
-//own
-import BtnCustom from "../General/BtnCustom";
 import {
   useDisclosure,
   Modal,
@@ -20,14 +17,17 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
+//own
+import BtnCustom from "../General/BtnCustom";
+
 export default function DevCreationForm() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [countryName, setCountryName] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedState, setSelectedState] = useState("Not available");
+  const [selectedCity, setSelectedCity] = useState("Not available");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleCountryChange = (e) => {
@@ -40,15 +40,48 @@ export default function DevCreationForm() {
 
   const handleStatesChange = (e) => {
     const objectByIndex = states[e.target.value];
-    console.log(objectByIndex);
     setSelectedState(e.target.value);
     const listCities = City.getCitiesOfState(objectByIndex.countryCode, objectByIndex.isoCode);
-    console.log(listCities);
     setCities(listCities);
   };
 
   const handleCityChange = (e) => {
     setSelectedCity(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("handleSubmit entro 2");
+    console.log(cities[selectedCity]);
+    console.log(e.target[3].value);
+    
+    
+    const formDataPack = {
+      documentNumber: e.target["dni"].value,
+      devName: e.target["devName"].value,
+      country: countries[selectedCountry].name,
+      state: states[selectedState]?.name? states[selectedState].name : "Not available",
+      city: cities[selectedCity]?.name? cities[selectedCity].name : "Not available",
+      company: e.target[5].checked,
+    };
+    console.log("handleSubmit entro");
+
+    console.log(formDataPack);
+    fetch("/api/apps/dev", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formDataPack),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        onClose();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   useEffect(() => {
@@ -66,13 +99,13 @@ export default function DevCreationForm() {
           <ModalHeader>New Developer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form action=''>
+            <form onSubmit={handleSubmit}>
               <FormLabel>Document Number</FormLabel>
-              <Input type='number' />
+              <Input type='number' id='dni' name='dni' />
               <FormLabel>Dev Name</FormLabel>
-              <Input type='Text' />
+              <Input required type='Text' id='devName' name='devName' />
               <FormLabel>Country</FormLabel>
-              <Select id='country' name='country' value={selectedCountry} onChange={handleCountryChange}>
+              <Select required  id='country' name='country' value={selectedCountry} onChange={handleCountryChange} placeholder={"choose a country"}>
                 {countries.map((country, index) => (
                   <option key={index} value={index}>
                     {country.name}
@@ -80,7 +113,7 @@ export default function DevCreationForm() {
                 ))}
               </Select>
               <FormLabel>State</FormLabel>
-              <Select name='state' id='state' onChange={handleStatesChange}>
+              <Select name='state' id='state' value={selectedState} onChange={handleStatesChange} placeholder={"choose a state if available"}>
                 {states.map((state, index) => (
                   <option key={index} value={index}>
                     {state.name}
@@ -88,9 +121,9 @@ export default function DevCreationForm() {
                 ))}
               </Select>
               <FormLabel>City</FormLabel>
-              <Select name='city' id='city' onChange={handleCityChange}>
+              <Select name='city' id='city' value={selectedCity} onChange={handleCityChange} placeholder="choose a city if available">
                 {cities.map((city, index) => (
-                  <option key={index} value={city.name}>
+                  <option key={index} value={index}>
                     {city.name}
                   </option>
                 ))}
@@ -99,9 +132,10 @@ export default function DevCreationForm() {
                 <FormLabel htmlFor='company' mb='0'>
                   Company
                 </FormLabel>
-                <Switch id='company' />
+                <Switch id='company' name="company" defaultChecked={false} />
               </FormControl>
-              <BtnCustom text={"Create New Dev"} />
+              <button type="submit">submit</button>
+              <BtnCustom text={"Create New Dev"} type="submit" onClick={handleSubmit}/>
             </form>
           </ModalBody>
         </ModalContent>

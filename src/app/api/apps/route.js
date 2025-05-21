@@ -7,7 +7,7 @@ import { sqlConn } from "@/libs/mysql";
 // flush privileges;
 
 export async function GET() {
-  const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
+  const result = await sqlConn.query("SELECT * FROM apps WHERE dev_id = 1");
   console.log(result);
   return NextResponse.json({ message: result });
 }
