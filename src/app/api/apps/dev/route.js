@@ -9,5 +9,5 @@ export async function GET() {
 export async function POST(request) {   
   const data = await request.json();
   console.log("POST data", data);
-  return NextResponse.json({ message: "data got" });
+  return NextResponse.json({ message: "ok" , status: 201 });
 }

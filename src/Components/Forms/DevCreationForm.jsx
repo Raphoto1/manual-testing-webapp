@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import {
+  Button,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -19,6 +20,7 @@ import {
 
 //own
 import BtnCustom from "../General/BtnCustom";
+import handlePostText from "@/Hooks/handlePostText.hook";
 
 export default function DevCreationForm() {
   const [countries, setCountries] = useState([]);
@@ -49,40 +51,27 @@ export default function DevCreationForm() {
     setSelectedCity(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handleSubmit entro 2");
-    console.log(cities[selectedCity]);
-    console.log(e.target[3].value);
-    
-    
     const formDataPack = {
       documentNumber: e.target["dni"].value,
       devName: e.target["devName"].value,
       country: countries[selectedCountry].name,
-      state: states[selectedState]?.name? states[selectedState].name : "Not available",
-      city: cities[selectedCity]?.name? cities[selectedCity].name : "Not available",
+      state: states[selectedState]?.name ? states[selectedState].name : "Not available",
+      city: cities[selectedCity]?.name ? cities[selectedCity].name : "Not available",
       company: e.target[5].checked,
     };
-    console.log("handleSubmit entro");
+    const response = await handlePostText("/api/apps/dev", formDataPack);
+    console.log("response", response);
+    if (response) {
+      console.log("response", response);
+      onClose();
+    }
+    else {
+      alert("Error creating developer");
+    }
+  }
 
-    console.log(formDataPack);
-    fetch("/api/apps/dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formDataPack),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        onClose();
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
   useEffect(() => {
     const countryData = Country.getAllCountries();
@@ -105,7 +94,7 @@ export default function DevCreationForm() {
               <FormLabel>Dev Name</FormLabel>
               <Input required type='Text' id='devName' name='devName' />
               <FormLabel>Country</FormLabel>
-              <Select required  id='country' name='country' value={selectedCountry} onChange={handleCountryChange} placeholder={"choose a country"}>
+              <Select required id='country' name='country' value={selectedCountry} onChange={handleCountryChange} placeholder={"choose a country"}>
                 {countries.map((country, index) => (
                   <option key={index} value={index}>
                     {country.name}
@@ -121,7 +110,7 @@ export default function DevCreationForm() {
                 ))}
               </Select>
               <FormLabel>City</FormLabel>
-              <Select name='city' id='city' value={selectedCity} onChange={handleCityChange} placeholder="choose a city if available">
+              <Select name='city' id='city' value={selectedCity} onChange={handleCityChange} placeholder='choose a city if available'>
                 {cities.map((city, index) => (
                   <option key={index} value={index}>
                     {city.name}
@@ -132,14 +121,15 @@ export default function DevCreationForm() {
                 <FormLabel htmlFor='company' mb='0'>
                   Company
                 </FormLabel>
-                <Switch id='company' name="company" defaultChecked={false} />
+                <Switch id='company' name='company' defaultChecked={false} />
               </FormControl>
-              <button type="submit">submit</button>
-              <BtnCustom text={"Create New Dev"} type="submit" onClick={handleSubmit}/>
+              <Button type='submit' bgGradient={"linear(to-r, purple.500, pink.500)"} className='w-1/6' size={"xs"} rounded={"full"} w={"fit-content"}>
+                Submit new developer
+              </Button>
             </form>
           </ModalBody>
         </ModalContent>
       </Modal>
     </>
   );
-}
+};
