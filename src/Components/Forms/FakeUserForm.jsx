@@ -1,4 +1,4 @@
-'use client'
+"use client";
 //app
 import React from "react";
 import {
@@ -35,10 +35,7 @@ export default function FakeUserForm() {
       genre: e.target["genre"].value,
       email: e.target["email"].value,
     };
-    const response = await handlePostText(
-      "/api/apps/fakeUser",
-      formDataPack
-    );
+    const response = await handlePostText("/api/apps/fakeUser", formDataPack);
     if (response.status === 201) {
       toast({
         title: "Fake User created",
@@ -69,20 +66,20 @@ export default function FakeUserForm() {
             <form onSubmit={handleSubmit}>
               <FormControl isRequired>
                 <FormLabel>Fake Name</FormLabel>
-                <Input isRequired type='Text' id="name" name="name"/>
+                <Input isRequired type='Text' id='name' name='name' />
               </FormControl>
               <FormLabel>Fake Lastname</FormLabel>
-              <Input type='Text' id="lastName" name="lastName"/>
+              <Input type='Text' id='lastName' name='lastName' />
               <FormLabel>Age</FormLabel>
-              <Input type='number' id="age" name="age"/>
+              <Input type='number' id='age' name='age' />
               <FormLabel>Phone Number</FormLabel>
-              <Input type='number' id="phoneNumber" name="phoneNumber"/>
+              <Input type='number' id='phoneNumber' name='phoneNumber' />
               <FormLabel>Genre</FormLabel>
-              <Input type='Text' id="genre" name="genre"/>
+              <Input type='Text' id='genre' name='genre' />
               <FormLabel>Email</FormLabel>
-              <Input type='email' id="email" name="email"/>
+              <Input type='email' id='email' name='email' />
               <Box display={"flex"} justifyContent={"end"} pt={2}>
-                <BtnCustom text={"Create New Fake User"}  type={'submit'}/>
+                <BtnCustom text={"Create New Fake User"} type={"submit"} />
               </Box>
             </form>
           </ModalBody>
