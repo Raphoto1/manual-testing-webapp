@@ -7,7 +7,12 @@ import { sqlConn } from "@/libs/mysql";
 // flush privileges;
 
 export async function GET() {
-  const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
-  console.log(result);
-  return NextResponse.json({ message: result });
+  try {
+    const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
+    console.log(result);
+    return NextResponse.json({ message: 'success', payload: result }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ message: 'error', error: error.message }, { status: 500 });
+  }
 }

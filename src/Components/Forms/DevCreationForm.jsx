@@ -16,6 +16,7 @@ import {
   Select,
   Switch,
   FormControl,
+  useToast,
 } from "@chakra-ui/react";
 
 //own
@@ -23,6 +24,7 @@ import BtnCustom from "../General/BtnCustom";
 import handlePostText from "@/Hooks/handlePostText.hook";
 
 export default function DevCreationForm() {
+  const toast = useToast();
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -62,16 +64,25 @@ export default function DevCreationForm() {
       company: e.target[5].checked,
     };
     const response = await handlePostText("/api/apps/dev", formDataPack);
-    console.log("response", response);
-    if (response) {
-      console.log("response", response);
+    if (response.status === 201) {
+      toast({
+        title: "Developer created.",
+        description: "Developer created successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       onClose();
+    } else {
+      toast({
+        title: "Error creating developer.",
+        description: "Error creating developer, please try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    else {
-      alert("Error creating developer");
-    }
-  }
-
+  };
 
   useEffect(() => {
     const countryData = Country.getAllCountries();
@@ -123,13 +134,11 @@ export default function DevCreationForm() {
                 </FormLabel>
                 <Switch id='company' name='company' defaultChecked={false} />
               </FormControl>
-              <Button type='submit' bgGradient={"linear(to-r, purple.500, pink.500)"} className='w-1/6' size={"xs"} rounded={"full"} w={"fit-content"}>
-                Submit new developer
-              </Button>
+              <BtnCustom text={'Submit new developer'} type={'submit'}/>
             </form>
           </ModalBody>
         </ModalContent>
       </Modal>
     </>
   );
-};
+}
