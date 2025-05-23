@@ -20,10 +20,10 @@ export default function AppsCard({ listData, listTitle }) {
       <div className='w-full h-full p-1 align-top'>
         <ul>
           {listData?.map((e, index) => (
-            <li key={index} className='flex w-full bg-slate-600 opacity-90 justify-between rounded-md p-1 items-center mb-2'>
-              <p className='text-white text-wrap text-xs w-1/4'>{e.itemTitle}</p>
+            <li key={e.ap_RI} className='flex w-full bg-slate-600 opacity-90 justify-between rounded-md p-1 items-center mb-2'>
+              <p className='text-white text-wrap text-xs w-1/4'>{e.app_name}</p>
               <Dropdown title={"actions"} options={e.options}/>
-              <Badge text={e.status} />
+              <Badge text={e.app_status} />
             </li>
           ))}
         </ul>

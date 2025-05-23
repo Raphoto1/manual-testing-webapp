@@ -1,6 +1,7 @@
 //imports de app
 import { NextResponse } from "next/server";
 import { sqlConn } from "@/libs/mysql";
+import { getAllDevs } from "@/Service/developer.service";
 
 export function POST(request) {
   const body = request.json();
@@ -11,7 +12,8 @@ export function POST(request) {
 }
 
 export async function GET() {
-  const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
+  const role = "admin"; // or "user" or "guest"
+  const result = await getAllDevs(role)
   console.log(result);
   return NextResponse.json({ message: result });
 }

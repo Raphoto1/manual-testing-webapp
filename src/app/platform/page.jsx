@@ -1,9 +1,16 @@
-import React from 'react'
+'use client'
+import React, { use } from 'react'
+
 import HeaderBasic from '@/Components/HeaderBasic'
 import Functions from '@/Components/Functions'
 import AppsCard from '@/Components/AppsCard';
+import { useGetApps } from '@/Hooks/useGetApps.hook';
 
 export default function platform() {
+  // CAMBIAR A FUUTUURO POR UUN GENERAL
+  const {data, error, isLoading} = useGetApps();
+
+  console.log(data);
     const mockOpts = [
         {
           itemTitle: "Sala de lectura",

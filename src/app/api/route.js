@@ -9,7 +9,6 @@ import { sqlConn } from "@/libs/mysql";
 export async function GET() {
   try {
     const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
-    console.log(result);
     return NextResponse.json({ message: 'success', payload: result }, { status: 200 });
   } catch (error) {
     console.error("Error fetching data:", error);
