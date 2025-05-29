@@ -29,14 +29,14 @@ export default function QuestionForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = async (e) => {
+    // con el auth ya se agrega el userId
     e.preventDefault();
     const formDataPack = {
       question: e.target["question"].value,
-      type: e.target["qType"].value,
-      spectedAnswer: typeChoosed === "boolean"
-          ? switchValue
-          : e.target["spectedAnswer"].value,
-      fileName: e.target["fileName"].files[0],
+      qType: e.target["qType"].value,
+      spectedAnswer: typeChoosed === "boolean" ? switchValue : e.target["spectedAnswer"].value,
+      file: e.target["fileName"].files[0],
+      userId: 1,
     };
     const formData = new FormData();
     for (const key in formDataPack) {

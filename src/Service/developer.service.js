@@ -1,4 +1,4 @@
-import { getAllDevsDao } from "@/Dao/developer.dao";
+import { getAllDevsDao, createDevDao } from "@/Dao/developer.dao";
 
 export async function getAllDevs(role) {
   const result = await getAllDevsDao(role);
@@ -13,7 +13,8 @@ export async function getDevById(id, role) {
 }
 
 export async function createDev(data, role) {
-  const result = await sqlConn.query("INSERT INTO app_testing.questions (question, answer) VALUES (?, ?)", [data.question, data.answer]);
+  // Check if the user has the right role to create a developer
+  const result = await createDevDao(data);
   console.log(result);
   return result;
 }

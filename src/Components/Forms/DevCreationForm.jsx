@@ -55,15 +55,26 @@ export default function DevCreationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (e.target["dni"].value === "" || e.target["devName"].value === "" || selectedCountry === "") {
+      toast({
+        title: "Error creating developer.",
+        description: "Please fill all required fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
     const formDataPack = {
-      documentNumber: e.target["dni"].value,
-      devName: e.target["devName"].value,
+      dni: e.target["dni"].value,
+      dev_name: e.target["devName"].value,
       country: countries[selectedCountry].name,
       state: states[selectedState]?.name ? states[selectedState].name : "Not available",
       city: cities[selectedCity]?.name ? cities[selectedCity].name : "Not available",
       company: e.target[5].checked,
     };
     const response = await handlePostText("/api/apps/dev", formDataPack);
+    // toast 409
     if (response.status === 201) {
       toast({
         title: "Developer created.",
@@ -73,7 +84,17 @@ export default function DevCreationForm() {
         isClosable: true,
       });
       onClose();
-    } else {
+    }
+    else if (response.status === 409) {
+      toast({
+        title: "Error creating developer.",
+        description: "Developer already exists.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    else {
       toast({
         title: "Error creating developer.",
         description: "Error creating developer, please try again.",
@@ -102,8 +123,10 @@ export default function DevCreationForm() {
             <form onSubmit={handleSubmit}>
               <FormLabel>Document Number</FormLabel>
               <Input type='number' id='dni' name='dni' />
-              <FormLabel>Dev Name</FormLabel>
-              <Input required type='Text' id='devName' name='devName' />
+              <FormControl isRequired>
+                <FormLabel>Dev Name</FormLabel>
+                <Input required type='Text' id='devName' name='devName' />
+              </FormControl>
               <FormLabel>Country</FormLabel>
               <Select required id='country' name='country' value={selectedCountry} onChange={handleCountryChange} placeholder={"choose a country"}>
                 {countries.map((country, index) => (
@@ -134,7 +157,7 @@ export default function DevCreationForm() {
                 </FormLabel>
                 <Switch id='company' name='company' defaultChecked={false} />
               </FormControl>
-              <BtnCustom text={'Submit new developer'} type={'submit'}/>
+              <BtnCustom text={"Submit new developer"} type={"submit"} />
             </form>
           </ModalBody>
         </ModalContent>

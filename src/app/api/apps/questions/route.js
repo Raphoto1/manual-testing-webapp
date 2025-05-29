@@ -1,4 +1,5 @@
 //imports de app
+import { createQuestion } from "@/Service/questions.service";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -6,9 +7,14 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    const file = await request.formData();
-    const fileName = file.get("fileName");
-    console.log(file);
+  try {
+    const capturedForm = await request.formData();
+    console.log("Captured Form Data:", capturedForm);
     
-  return NextResponse.json({ message: "ok", status: 201 }, { status: 201 });
+    const result = await createQuestion(capturedForm);
+    return NextResponse.json({ message: result, status: 201 }, { status: 201 });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
 }
