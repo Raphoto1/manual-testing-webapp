@@ -1,6 +1,6 @@
 "use client";
 //app
-import React from "react";
+import React, { useState } from "react";
 import {
   useDisclosure,
   Modal,
@@ -23,6 +23,8 @@ import BtnCustom from "../General/BtnCustom";
 import handlePostText from "@/Hooks/handlePostText.hook";
 
 export default function FakeUserForm() {
+  const { selectedApp, setSelectedApp } = useState("");
+  const { selectedDeveloper, setSelectedDeveloper } = useState("");
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleSubmit = async (e) => {
@@ -34,6 +36,8 @@ export default function FakeUserForm() {
       phoneNumber: e.target["phoneNumber"].value,
       genre: e.target["genre"].value,
       email: e.target["email"].value,
+      app: e.target["app"].value,
+      developer: e.target["developer"].value,
     };
     const response = await handlePostText("/api/apps/fakeUser", formDataPack);
     if (response.status === 201) {
@@ -64,11 +68,23 @@ export default function FakeUserForm() {
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit}>
+              <FormLabel>Select App</FormLabel>
+              <Select id='app' name='app' value={selectedApp} placeholder='Select App'>
+                <option value='app1'>App 1</option>
+                <option value='app2'>App 2</option>
+                <option value='app3'>App 3</option>
+              </Select>
+              <FormLabel>Select Developer</FormLabel>
+              <Select id='developer' name='developer' value={selectedDeveloper} placeholder='Select Developer'>
+                <option value='dev1'>Default developer assigned to user</option>
+                <option value='dev2'>Developer 2</option>
+                <option value='dev3'>Developer 3</option>
+              </Select>
               <FormControl isRequired>
                 <FormLabel>Fake Name</FormLabel>
                 <Input isRequired type='Text' id='name' name='name' />
               </FormControl>
-              <FormLabel>Fake Lastname</FormLabel>
+              <FormLabel>Fake Password</FormLabel>
               <Input type='Text' id='lastName' name='lastName' />
               <FormLabel>Age</FormLabel>
               <Input type='number' id='age' name='age' />
