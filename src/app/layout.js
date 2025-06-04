@@ -1,6 +1,14 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,11 +28,30 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
-      <footer>CreativeRafa 2025</footer>
-      </body>
-    </html>
+    <ClerkProvider
+    appearance={{
+    captcha: {
+      theme: 'dark',
+      size: 'flexible',
+      language: 'es-ES',
+    }
+  }}
+    >
+      <html lang='en'>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+          <Providers>{children}</Providers>
+        <footer>CreativeRafa 2025</footer>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

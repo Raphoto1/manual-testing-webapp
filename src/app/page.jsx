@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 //own
+import RegisterForm from "@/Components/Forms/RegisterForm";
+
 
 export default function Home() {
   return (
@@ -23,6 +25,10 @@ export default function Home() {
               Multipotential Artist for Multipotential DREAMS
             </h3>
           </div>
+        </div>
+        <div>
+          <h2 className="text-2xl text-white">New Client?</h2>
+<RegisterForm />
         </div>
         <div id="servicesGeneral" className=" flex w-full">
           <motion.div
