@@ -23,6 +23,7 @@ import BtnCustom from "../General/BtnCustom";
 import handlePostText from "@/Hooks/handlePostText.hook";
 
 export default function FakeUserForm() {
+  //get app and dev
   const { selectedApp, setSelectedApp } = useState("");
   const { selectedDeveloper, setSelectedDeveloper } = useState("");
   const toast = useToast();
@@ -36,6 +37,7 @@ export default function FakeUserForm() {
       phoneNumber: e.target["phoneNumber"].value,
       genre: e.target["genre"].value,
       email: e.target["email"].value,
+      user_id: 1, // This should be replaced with the actual user ID logic
       app: e.target["app"].value,
       developer: e.target["developer"].value,
     };
@@ -68,17 +70,17 @@ export default function FakeUserForm() {
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit}>
-              <FormLabel>Select App</FormLabel>
-              <Select id='app' name='app' value={selectedApp} placeholder='Select App'>
-                <option value='app1'>App 1</option>
-                <option value='app2'>App 2</option>
-                <option value='app3'>App 3</option>
-              </Select>
               <FormLabel>Select Developer</FormLabel>
               <Select id='developer' name='developer' value={selectedDeveloper} placeholder='Select Developer'>
                 <option value='dev1'>Default developer assigned to user</option>
                 <option value='dev2'>Developer 2</option>
                 <option value='dev3'>Developer 3</option>
+              </Select>
+              <FormLabel>Select App</FormLabel>
+              <Select id='app' name='app' value={selectedApp} placeholder='Select App'>
+                <option value='app1'>App 1</option>
+                <option value='app2'>App 2</option>
+                <option value='app3'>App 3</option>
               </Select>
               <FormControl isRequired>
                 <FormLabel>Fake Name</FormLabel>

@@ -35,7 +35,7 @@ export default function Home() {
             }}>
             <h2 className=" text-white">Mograph</h2>
           </motion.div>
-          <Link href="/platform" className="w-1/4">
+          <Link href="/platform/testing" className="w-1/4">
             <motion.div
               className='h-20 bg-pink-100 flex items-center justify-center'
               whileHover={{ width: "100%"}}

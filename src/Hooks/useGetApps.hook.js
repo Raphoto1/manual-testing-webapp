@@ -30,3 +30,13 @@ export const useGetAppsByApp = (app) => {
     isValidating: isValidating,
   };
 };
+
+export const useGetAppsByUser = (user) => {
+  const appsUrl = `/api/apps?user=${user}`;
+  const { data, error, isValidating } = useSWR(appsUrl, fetcher);
+  return {
+    payload: data ? data.payload : undefined,
+    error: error,
+    isValidating: isValidating,
+  };
+}
