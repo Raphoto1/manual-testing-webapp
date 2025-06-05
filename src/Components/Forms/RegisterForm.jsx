@@ -17,6 +17,7 @@ import {
   RadioGroup,
   HStack,
   Radio,
+  useToast,
 } from "@chakra-ui/react";
 import { useSignUp } from "@clerk/nextjs";
 
@@ -25,6 +26,7 @@ export default function RegisterForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modRef = useRef(null);
   const { signUp, isLoaded, setActive } = useSignUp();
+  const toast = useToast();
   // data setters
 
   const [email, setEmail] = useState("");
@@ -41,28 +43,42 @@ export default function RegisterForm() {
       setError("Passwords do not match");
       return;
     }
+    console.log(area);
 
     try {
-      await signUp.create({
+      const result = await signUp.create({
         emailAddress: email,
         password: password,
-      });
-
-      await signUp.updateUser({
         publicMetadata: {
           area: area,
+          campoExtra: "Campo",
+          algoMas: "Algo mas",
         },
       });
-
+      if (result.status === "complete") {
+        // If the sign-up is complete, set the active session and redirect
+        console.log("Sign up complete, setting active session");
+        await setActive({ session: signUp.createdSessionId });
+      } else {
+        setError("Please, check your email");
+      }
       // Set the active session
-      await setActive({ session: signUp.createdSessionId });
       router.push(`/platform/${area}`); // Redirect to home page or desired route
       // Close the modal after successful signup
       onClose();
     } catch (error) {
-      console.error("Error during sign up:", error);
+      setError(error.message || "An error occurred during sign up");
+      console.log("Error during sign up:", error);
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred during sign up",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
+
   return (
     <>
       <Button onClick={onOpen}>Register</Button>
@@ -76,19 +92,20 @@ export default function RegisterForm() {
             <form onSubmit={handleSubmit} ref={modRef}>
               <FormControl isRequired>
                 <FormLabel>email</FormLabel>
-                <Input type='email' placeholder='dreamer@email.com' value={email} onChange={e => setEmail(e.target.value)} />
+                <Input type='email' placeholder='dreamer@email.com' value={email} onChange={(e) => setEmail(e.target.value)} />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>password</FormLabel>
-                <Input type='password' value={password} onChange={e => setPassword(e.target.value)} />
+                <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>confirm password</FormLabel>
-                <Input type='password' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                <Input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </FormControl>
-              <FormControl as={"fieldSet"} isRequired>
+              <FormControl as={"fieldset"} isRequired>
                 <FormLabel as={"legend"}>Choose Area</FormLabel>
-                  <HStack value={area} onChange={e => setArea(e.target.value)}>
+                <RadioGroup>
+                  <HStack value={area} onChange={(e) => setArea(e.target.value)}>
                     <Radio value='testing'>Testing</Radio>
                     <Radio value='mograph'>Mograph</Radio>
                     <Radio value='dev'>Dev</Radio>
@@ -96,6 +113,7 @@ export default function RegisterForm() {
                   </HStack>
                 </RadioGroup>
               </FormControl>
+              <div id='clerk-captcha' />
               <Button type='submit' mt={4} w={"full"}>
                 Register
               </Button>

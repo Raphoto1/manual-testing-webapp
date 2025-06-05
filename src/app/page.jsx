@@ -6,9 +6,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 //own
 import RegisterForm from "@/Components/Forms/RegisterForm";
-
+import LoginForm from "@/Components/Forms/LoginForm";
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
+  const { isSignedIn, isLoaded, user } = useUser();
+console.log("user", user);
+
   return (
     <div className='general-bg h-dvh'>
       <section id='homeSplash' className='flex w-full h-svh bg-slate-800 justify-center flex-wrap'>
@@ -26,56 +30,60 @@ export default function Home() {
             </h3>
           </div>
         </div>
-        <div>
-          <h2 className="text-2xl text-white">New Client?</h2>
-<RegisterForm />
+        <div className='flex w-full justify-around items-center flex-wrap'>
+          <div>
+            <h2 className='text-2xl text-white'>New Client?</h2>
+            <RegisterForm />
+          </div>
+          <div>
+            <h2 className='text-2xl text-white'>Lets Create</h2>
+            <LoginForm />
+          </div>
         </div>
-        <div id="servicesGeneral" className=" flex w-full">
+        <div id='servicesGeneral' className=' flex w-full'>
           <motion.div
             className='w-1/4 h-20 bg-pink-500'
-            whileHover={{ width: "100%", z:5}}
+            whileHover={{ width: "100%", z: 5 }}
             whileTap={{
               scale: 0.8,
               rotate: -90,
               borderRadius: "100%",
             }}>
-            <h2 className=" text-white">Mograph</h2>
+            <h2 className=' text-white'>Mograph</h2>
           </motion.div>
-          <Link href="/platform/testing" className="w-1/4">
+          <Link href='/platform/testing' className='w-1/4'>
             <motion.div
               className='h-20 bg-pink-100 flex items-center justify-center'
-              whileHover={{ width: "100%"}}
+              whileHover={{ width: "100%" }}
               whileTap={{
                 scale: 0.8,
                 rotate: -90,
                 borderRadius: "100%",
               }}>
-              <h2 className="text-white">Testing</h2>
+              <h2 className='text-white'>Testing</h2>
             </motion.div>
           </Link>
 
           <motion.div
             className='w-1/4 h-20 bg-purple-400'
-            whileHover={{ width: "100%"}}
-            whileTap={{
-              scale: 0.8,
-              rotate: -90,
-              borderRadius: "100%",
-            }}
-            
-          >
-            <h2 className=" text-white">Dev</h2>
-          </motion.div>
-
-          <motion.div
-            className='w-1/4 h-20 bg-green-500'
-            whileHover={{ width: "100%"}}
+            whileHover={{ width: "100%" }}
             whileTap={{
               scale: 0.8,
               rotate: -90,
               borderRadius: "100%",
             }}>
-            <h2 className=" text-white">Live Events</h2>
+            <h2 className=' text-white'>Dev</h2>
+          </motion.div>
+
+          <motion.div
+            className='w-1/4 h-20 bg-green-500'
+            whileHover={{ width: "100%" }}
+            whileTap={{
+              scale: 0.8,
+              rotate: -90,
+              borderRadius: "100%",
+            }}>
+            <h2 className=' text-white'>Live Events</h2>
           </motion.div>
         </div>
       </section>
