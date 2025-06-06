@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { FormControl, FormLabel, RadioGroup, HStack, Radio, Button, useToast } from "@chakra-ui/react";
 import { useUser } from "@clerk/nextjs";
 
-export default function AreaFormAlone(props) {
-  const [isVisible, setIsVisible] = useState(props.isVisibleIn);
+export default function AreaFormAlone(isVisibleIn, onIsOk2Change) {
+  const [isVisible, setIsVisible] = useState(isVisibleIn);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOk, setIsOk] = useState(false);
   const [area, setArea] = useState("");
   const { user } = useUser();
   const toast = useToast();
@@ -22,6 +23,7 @@ export default function AreaFormAlone(props) {
       console.log(result);
       if (result !== null) {
         setIsLoading(false);
+        setIsOk(true);
         toast({
           title: "Registration Successful",
           description: "You have successfully registered.",
@@ -45,9 +47,17 @@ export default function AreaFormAlone(props) {
     }
   };
 
+  useEffect(() => {
+    console.log('isVisibleIn adentro',isVisibleIn);
+    
+    if (onIsOk2Change) {
+      onIsOk2Change(isOk);
+    }
+  }, [isOk, onIsOk2Change, isVisibleIn]);
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      {isVisible?<form onSubmit={handleSubmit}>
         <FormControl as={"fieldset"} isRequired>
           <FormLabel as={"legend"}>Choose Area</FormLabel>
           <RadioGroup>
@@ -62,7 +72,8 @@ export default function AreaFormAlone(props) {
         <Button type='submit' isLoading={isLoading} isDisabled={false} variant={"solid"} mt={4} w={"full"}>
           Confirm Area
         </Button>
-      </form>
+      </form>:null}
+      
     </>
   );
 }

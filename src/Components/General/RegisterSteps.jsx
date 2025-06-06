@@ -35,6 +35,7 @@ function RegisterSteps() {
   //controls
   const [step1IsOk, setStep1IsOk] = useState(false);
   const [activeStep2, setActiveStep2] = useState(false);
+  const [step2IsOk, setStep2IsOk] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modRef = useRef(null);
   //list steps
@@ -53,7 +54,15 @@ function RegisterSteps() {
     {
       title: "Step 2: Set Area To Work",
       description: "What Multipotential skill are we going to work",
-      component: <AreaFormAlone/>
+      component: (
+        <AreaFormAlone
+          onIsOk2Change={(value) => {
+            setStep2IsOk(value);
+          }
+        }
+        isVisibleIn={activeStep2}
+        />
+      ),
     },
     { title: "Step 3: Complete your profile", description: "Final Details." },
   ];
@@ -66,14 +75,13 @@ function RegisterSteps() {
     if (activeStep === 0 && step1IsOk) {
       setActiveStep(activeStep + 1);
       setActiveStep2(true);
-      console.log('step2 from register steps',activeStep2);
-      
+      console.log("step2 from register steps", activeStep2);
     }
   };
 
   useEffect(() => {
     chkNextStepReady();
-  }, [step1IsOk, setActiveStep]);
+  }, [step1IsOk, setActiveStep, step2IsOk]);
 
   return (
     <>
