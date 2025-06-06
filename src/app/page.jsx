@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 //own
 import RegisterForm from "@/Components/Forms/RegisterForm";
 import LoginForm from "@/Components/Forms/LoginForm";
-import { useUser } from "@clerk/nextjs";
-
+import RegisterSteps from "@/Components/General/RegisterSteps";
 export default function Home() {
   const { isSignedIn, isLoaded, user } = useUser();
 console.log("user", user);
@@ -34,6 +34,7 @@ console.log("user", user);
           <div>
             <h2 className='text-2xl text-white'>New Client?</h2>
             <RegisterForm />
+            <RegisterSteps />
           </div>
           <div>
             <h2 className='text-2xl text-white'>Lets Create</h2>
