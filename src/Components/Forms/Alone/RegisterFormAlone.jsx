@@ -4,7 +4,9 @@ import { FormControl, Input, FormLabel, RadioGroup, HStack, Radio, Button, useTo
 import { useSignUp } from "@clerk/nextjs";
 
 function RegisterFormAlone({ onIsOkChange }) {
-  const [ isOk, setIsOk ] = useState(false);
+  const [isOk, setIsOk] = useState(false);
+  const [readyToRegister, setReadyToRegister] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
   const modRef = useRef(null);
   const { signUp, isLoaded, setActive } = useSignUp();
@@ -12,17 +14,11 @@ function RegisterFormAlone({ onIsOkChange }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const chkIsOk = () => {
-    if (password && confirmPassword && email) {
-      setIsOk(true);
-    } else {
-      setIsOk(false);
-    }
-  };
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(!isSubmitting);
     setError("");
     if (!isLoaded) return;
     if (password !== confirmPassword) {
@@ -44,9 +40,10 @@ function RegisterFormAlone({ onIsOkChange }) {
           duration: 5000,
           isClosable: true,
         });
+        setIsOk(true);
+        setIsSubmitting(false);
       }
     } catch (error) {
-      console.error("Error during sign up:", error);
       setError("An error occurred during registration. Please try again.");
       toast({
         title: "Error",
@@ -55,38 +52,51 @@ function RegisterFormAlone({ onIsOkChange }) {
         duration: 5000,
         isClosable: true,
       });
+      setIsSubmitting(false);
+    }
+  };
+
+  const chkIsReadyToRegister = () => {
+    if (email && password && confirmPassword && password === confirmPassword) {
+      setReadyToRegister(true);
     }
   };
 
   useEffect(() => {
-    chkIsOk();
+    chkIsReadyToRegister();
   }, [email, password, confirmPassword]);
-    
-    useEffect(() => {
+
+  useEffect(() => {
     if (onIsOkChange) {
       onIsOkChange(isOk);
     }
   }, [isOk, onIsOkChange]);
   return (
     <>
-      <form onSubmit={handleSubmit} ref={modRef}>
-        <FormControl isRequired>
-          <FormLabel>email</FormLabel>
-          <Input type='email' placeholder='dreamer@email.com' value={email} onChange={(e) => setEmail(e.target.value)} />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>password</FormLabel>
-          <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>confirm password</FormLabel>
-          <Input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-        </FormControl>
-        <div id='clerk-captcha' />
-        <Button type='submit' mt={4} w={"full"}>
-          Register
+      {isOk ? (
+        <Button colorScheme='green' w='full' mt={4} isDisabled>
+          ¡Registered successfully!
         </Button>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} ref={modRef}>
+          <FormControl isRequired>
+            <FormLabel>email</FormLabel>
+            <Input type='email' placeholder='dreamer@email.com' value={email} onChange={(e) => setEmail(e.target.value)} />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>password</FormLabel>
+            <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>confirm password</FormLabel>
+            <Input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          </FormControl>
+          <div id='clerk-captcha' />
+          <Button type='submit' isLoading={isSubmitting} isDisabled={!readyToRegister} variant={readyToRegister ? "solid" : "ghost"} mt={4} w={"full"}>
+            Register
+          </Button>
+        </form>
+      )}
     </>
   );
 }

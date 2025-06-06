@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -28,21 +28,53 @@ import {
   Stepper,
   useSteps,
 } from "@chakra-ui/react";
-
+//imports propios
 import RegisterFormAlone from "../Forms/Alone/RegisterFormAlone";
+import AreaFormAlone from "../Forms/Alone/AreaFormAlone";
 function RegisterSteps() {
-  const steps = [
-    {
-      title: "Step 1: Enter your details", description: "Fill in your email and password.", component: <RegisterFormAlone onIsOkChange={(value) => console.log('incomingOK ${}',value)}/> },
-    { title: "Step 2: Confirm your email", description: "Check your inbox for a confirmation link." },
-    { title: "Step 3: Complete your profile", description: "Final Details." },
-  ];
+  //controls
+  const [step1IsOk, setStep1IsOk] = useState(false);
+  const [activeStep2, setActiveStep2] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modRef = useRef(null);
+  //list steps
+  const steps = [
+    {
+      title: "Step 1: Enter your details",
+      description: "Fill in your email and password.",
+      component: (
+        <RegisterFormAlone
+          onIsOkChange={(value) => {
+            setStep1IsOk(value);
+          }}
+        />
+      ),
+    },
+    {
+      title: "Step 2: Set Area To Work",
+      description: "What Multipotential skill are we going to work",
+      component: <AreaFormAlone/>
+    },
+    { title: "Step 3: Complete your profile", description: "Final Details." },
+  ];
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     steps: steps.length,
   });
+  //check step results
+  const chkNextStepReady = () => {
+    if (activeStep === 0 && step1IsOk) {
+      setActiveStep(activeStep + 1);
+      setActiveStep2(true);
+      console.log('step2 from register steps',activeStep2);
+      
+    }
+  };
+
+  useEffect(() => {
+    chkNextStepReady();
+  }, [step1IsOk, setActiveStep]);
+
   return (
     <>
       <Button onClick={onOpen}>RegisterSTP</Button>
@@ -71,12 +103,12 @@ function RegisterSteps() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button colorScheme='red' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost' onClick={() => setActiveStep(activeStep + 1)}>
+            {/* <Button variant={nextActive ? "blue" : "ghost"} isDisabled={!nextActive} onClick={() => setActiveStep(activeStep + 1)}>
               Next
-            </Button>
+            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
