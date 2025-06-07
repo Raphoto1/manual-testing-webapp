@@ -10,8 +10,8 @@ import RegisterForm from "@/Components/Forms/RegisterForm";
 import LoginForm from "@/Components/Forms/LoginForm";
 import RegisterSteps from "@/Components/General/RegisterSteps";
 export default function Home() {
-  const { isSignedIn, isLoaded, user } = useUser();
-console.log("user from page", user);
+//   const { isSignedIn, isLoaded, user } = useUser();
+// console.log("user from page", user);
 
   return (
     <div className='general-bg h-dvh'>

@@ -31,12 +31,14 @@ import {
 //imports propios
 import RegisterFormAlone from "../Forms/Alone/RegisterFormAlone";
 import AreaFormAlone from "../Forms/Alone/AreaFormAlone";
+import BtnToArea from "../Forms/Alone/BtnToArea";
 function RegisterSteps() {
   //controls
   const [step1IsOk, setStep1IsOk] = useState(false);
   const [activeStep2, setActiveStep2] = useState(false);
   const [step2IsOk, setStep2IsOk] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [activeStep3, setActiveStep3] = useState(false);
   const modRef = useRef(null);
   //list steps
   const steps = [
@@ -64,7 +66,10 @@ function RegisterSteps() {
         />
       ),
     },
-    { title: "Step 3: Complete your profile", description: "Final Details." },
+    {
+      title: "Step 3: Complete your profile", description: "Final Details.", component: (
+        <BtnToArea isVisibleIn={ activeStep3} />
+    ) },
   ];
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
@@ -75,10 +80,13 @@ function RegisterSteps() {
     if (activeStep === 0 && step1IsOk) {
       setActiveStep(activeStep + 1);
       setActiveStep2(true);
-      console.log("step2 from register steps", activeStep2);
+    }
+    if (activeStep === 1 && step2IsOk) {
+      setActiveStep(activeStep + 1);
+      setActiveStep2(false);
+      setActiveStep3(true);
     }
   };
-
   useEffect(() => {
     chkNextStepReady();
   }, [step1IsOk, setActiveStep, step2IsOk]);

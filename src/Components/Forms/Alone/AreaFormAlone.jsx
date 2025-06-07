@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FormControl, FormLabel, RadioGroup, HStack, Radio, Button, useToast } from "@chakra-ui/react";
 import { useUser } from "@clerk/nextjs";
 
-export default function AreaFormAlone(isVisibleIn, onIsOk2Change) {
+export default function AreaFormAlone({isVisibleIn, onIsOk2Change}) {
   const [isVisible, setIsVisible] = useState(isVisibleIn);
   const [isLoading, setIsLoading] = useState(false);
   const [isOk, setIsOk] = useState(false);
   const [area, setArea] = useState("");
+  const [subArea, setSubArea] = useState("");
   const { user } = useUser();
   const toast = useToast();
   const handleSubmit = async (e) => {
@@ -16,7 +17,7 @@ export default function AreaFormAlone(isVisibleIn, onIsOk2Change) {
       const result = await user.update({
         unsafeMetadata: {
           area: area,
-          subArea: "solo por agregar algo mas",
+          subArea: subArea,
           extra: "if you are reading this, you should not be here, so, have a nice day",
         },
       });
@@ -48,8 +49,6 @@ export default function AreaFormAlone(isVisibleIn, onIsOk2Change) {
   };
 
   useEffect(() => {
-    console.log('isVisibleIn adentro',isVisibleIn);
-    
     if (onIsOk2Change) {
       onIsOk2Change(isOk);
     }
@@ -57,7 +56,7 @@ export default function AreaFormAlone(isVisibleIn, onIsOk2Change) {
 
   return (
     <>
-      {isVisible?<form onSubmit={handleSubmit}>
+      {isVisibleIn?<form onSubmit={handleSubmit}>
         <FormControl as={"fieldset"} isRequired>
           <FormLabel as={"legend"}>Choose Area</FormLabel>
           <RadioGroup>
