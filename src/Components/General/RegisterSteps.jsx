@@ -37,8 +37,8 @@ function RegisterSteps() {
   const [step1IsOk, setStep1IsOk] = useState(false);
   const [activeStep2, setActiveStep2] = useState(false);
   const [step2IsOk, setStep2IsOk] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeStep3, setActiveStep3] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const modRef = useRef(null);
   //list steps
   const steps = [
@@ -60,16 +60,15 @@ function RegisterSteps() {
         <AreaFormAlone
           onIsOk2Change={(value) => {
             setStep2IsOk(value);
-          }
-        }
-        isVisibleIn={activeStep2}
+          }}
+          isVisibleIn={activeStep2}
         />
       ),
     },
     {
-      title: "Step 3: Complete your profile", description: "Final Details.", component: (
-        <BtnToArea isVisibleIn={ activeStep3} />
-    ) },
+      title: "Step 3: Lets Work",
+      component: <BtnToArea isVisibleIn={activeStep3} />,
+    },
   ];
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
@@ -122,9 +121,6 @@ function RegisterSteps() {
             <Button colorScheme='red' mr={3} onClick={onClose}>
               Close
             </Button>
-            {/* <Button variant={nextActive ? "blue" : "ghost"} isDisabled={!nextActive} onClick={() => setActiveStep(activeStep + 1)}>
-              Next
-            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
