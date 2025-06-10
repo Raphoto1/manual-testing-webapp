@@ -6,6 +6,7 @@ import { getAllDevs } from "@/Service/developer.service";
 export function POST(request) {
   const body = request.json();
   console.log("body", body);
+  
   // const result = await sqlConn.query("SELECT * FROM app_testing.questions;");
   // console.log(result);
   return NextResponse.json({ message: "ok" });
