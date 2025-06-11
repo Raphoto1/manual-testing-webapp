@@ -33,7 +33,6 @@ export default function Home() {
         <div className='flex w-full justify-around items-center flex-wrap'>
           <div>
             <h2 className='text-2xl text-white'>New Client?</h2>
-            <RegisterForm />
             <RegisterSteps />
           </div>
           <div>

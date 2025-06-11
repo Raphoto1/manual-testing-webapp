@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormControl, FormLabel, RadioGroup, HStack, Radio, Button, useToast } from "@chakra-ui/react";
 import { useUser } from "@clerk/nextjs";
+import useHandlePutText from "@/Hooks/useHandlePutText.hook";
 
 export default function AreaFormAlone({ isVisibleIn, onIsOk2Change }) {
   const [isVisible, setIsVisible] = useState(isVisibleIn);
@@ -23,6 +24,7 @@ export default function AreaFormAlone({ isVisibleIn, onIsOk2Change }) {
         },
       });
       console.log(result);
+      
       if (result !== null) {
         setIsLoading(false);
         setIsOk(true);
