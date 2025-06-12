@@ -5,14 +5,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 //own
-import RegisterForm from "@/Components/Forms/RegisterForm";
 import LoginForm from "@/Components/Forms/LoginForm";
 import RegisterSteps from "@/Components/General/RegisterSteps";
+import BtnToArea from "@/Components/Forms/Alone/BtnToArea";
 export default function Home() {
-//   const { isSignedIn, isLoaded, user } = useUser();
-// console.log("user from page", user);
+  const { isSignedIn, isLoaded, user } = useUser();
+  const [areaInfoActive, setAreaInfoActive] = useState(false);
+  console.log("user from page", user?.unsafeMetadata.area);
+  const chkUser = async () => {
+    if (user) {
+      setAreaInfoActive(true);
+    }
+  };
 
+  useEffect(() => {
+    chkUser();
+  }, [user]);
   return (
     <div className='general-bg h-dvh'>
       <section id='homeSplash' className='flex w-full h-svh bg-slate-800 justify-center flex-wrap'>
@@ -31,14 +41,22 @@ export default function Home() {
           </div>
         </div>
         <div className='flex w-full justify-around items-center flex-wrap'>
-          <div>
-            <h2 className='text-2xl text-white'>New Client?</h2>
-            <RegisterSteps />
-          </div>
-          <div>
-            <h2 className='text-2xl text-white'>Lets Create</h2>
-            <LoginForm />
-          </div>
+          {!areaInfoActive ? (
+            <div className='flex w-full justify-around items-center flex-wrap'>
+              <div>
+                <h2 className='text-2xl text-white'>New Client?</h2>
+                <RegisterSteps />
+              </div>
+              <div>
+                <h2 className='text-2xl text-white'>Lets Create</h2>
+                <LoginForm />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <BtnToArea isVisibleIn={true} />
+            </div>
+          )}
         </div>
         <div id='servicesGeneral' className=' flex w-full'>
           <motion.div

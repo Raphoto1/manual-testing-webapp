@@ -15,7 +15,7 @@ import {
   FormLabel,
   useToast,
 } from "@chakra-ui/react";
-import { useSignIn, ClerkProvider } from "@clerk/nextjs";
+import { useSignIn, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
@@ -23,7 +23,7 @@ export default function LoginForm() {
   const router = useRouter();
   const modRef = useRef(null);
   const { signIn, isLoaded, setActive } = useSignIn();
-  const clerk = ClerkProvider();
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,6 +32,7 @@ export default function LoginForm() {
   const [showReset, setShowReset] = useState(false);
   const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [userArea, setUserArea] = useState("");
   const toast = useToast();
 
   const handleSubmit = async (e) => {
@@ -128,10 +129,9 @@ export default function LoginForm() {
         duration: 5000,
         isClosable: true,
       });
-      setTimeout(async () => {
-        //revisar el cierre de la session
-        await clerk.signOut();
-      }, 1200);
+      setTimeout(() => {
+      window.location.reload();
+    }, 1200);
     } catch (err) {
       setError(err.errors ? err.errors[0].message : "Failed to reset password");
       toast({
