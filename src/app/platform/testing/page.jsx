@@ -12,7 +12,7 @@ export default function platform() {
   // bring apps info
 
   return (
-    <div className='flex flex-col gap-4 bg-gray-900'>
+    <div className='flex flex-col gap-4 bg-gray-900 max-h-max'>
       <HeaderBasic hName={user?.unsafeMetadata.area} hSubName={user?.unsafeMetadata.subArea} />
       <Functions />
       <AppsListFull />

@@ -22,6 +22,7 @@ import {
 //own
 import BtnCustom from "../General/BtnCustom";
 import handlePostText from "@/Hooks/handlePostText.hook";
+import { useUser } from "@clerk/nextjs";
 
 export default function DevCreationForm() {
   const toast = useToast();
@@ -33,6 +34,7 @@ export default function DevCreationForm() {
   const [selectedState, setSelectedState] = useState("Not available");
   const [selectedCity, setSelectedCity] = useState("Not available");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useUser();
 
   const handleCountryChange = (e) => {
     const objectByIndex = countries[e.target.value];
@@ -84,8 +86,7 @@ export default function DevCreationForm() {
         isClosable: true,
       });
       onClose();
-    }
-    else if (response.status === 409) {
+    } else if (response.status === 409) {
       toast({
         title: "Error creating developer.",
         description: "Developer already exists.",
@@ -93,8 +94,7 @@ export default function DevCreationForm() {
         duration: 3000,
         isClosable: true,
       });
-    }
-    else {
+    } else {
       toast({
         title: "Error creating developer.",
         description: "Error creating developer, please try again.",
